@@ -13,6 +13,39 @@ const router = express.Router();
 
 // Register a Director
 
+router.post('/register/director',async (req, res) => {
+    const { name, email, password } = req.body;
+
+    // Check all fields are present
+    if (!name || !email || !password) {
+        return res.status(400).json({ message: 'All fields are required' });
+    }
+
+    try {
+        // Check if Director already exists
+        const existingDirector = await DirectorModel.findOne({ email });
+        if (existingDirector) {
+            return res.status(400).json({ message: 'Director already exists' });
+        }
+
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Create new Director
+        const newDirector = new DirectorModel({
+            name,
+            email,
+            password: hashedPassword,
+            role: 'Director'
+        });
+
+        await newDirector.save();
+        res.status(201).json({ message: 'Director registered successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
 // login a Director
 router.post('/login/director', async (req, res) => {
     const { email, password } = req.body;
