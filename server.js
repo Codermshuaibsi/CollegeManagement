@@ -8,7 +8,7 @@ const app = express();
 app.use(express.json());
 const cors = require('cors');
 app.use(cors({
-  origin: ["http://localhost:3000", "https://your-frontend-url.vercel.app"]
+  origin: ["http://localhost:3000", "https://your-frontend-url.vercel.app"],
   credentials: true,
 }));
 
