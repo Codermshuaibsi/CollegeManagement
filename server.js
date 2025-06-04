@@ -6,6 +6,11 @@ const authRoutes = require('./routes/authRoutes');
 dotenv.config();
 const app = express();
 app.use(express.json());
+const cors = require('cors');
+app.use(cors({
+  origin: ["http://localhost:3000", "https://your-frontend-url.vercel.app"]
+  credentials: true,
+}));
 
 // Mount route
 app.use('/api/auth', authRoutes); 
